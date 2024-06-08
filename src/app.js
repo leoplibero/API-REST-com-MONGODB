@@ -1,25 +1,24 @@
 import express from "express";
 import conectaNaDatabase from "./config/dbConnect.js";
-import livro from "./models/Livro.js"
+import routes from "./routes/index.js";
 
 const conexao = await conectaNaDatabase();
 
-conexao.on("error", (error) =>{
-    console.error("Erro de conexão!", erro);//metodo para imprimir erro no log
-})
+conexao.on("error", (erro) => {
+  console.error("erro de conexão", erro);
+});
 
-conexao.once("open", () =>{
-    console.log("Conexão com banco efetuada com sucesso! ")
+conexao.once("open", () => {
+  console.log("Conexao com o banco feita com sucesso");
 })
 
 const app = express();
-app.use(express.json());// Middleware para parsear JSON
+routes(app);
 
-
-app.delete("/livros/:id", (req, res) =>{
-    const index=buscaLivro (req.params.id);
-    livros.splice(index, 1);//deletar 1 elemento id
-    res.status(200).send("Livro Removido com Sucesso");
-})
+app.delete("/livros/:id", (req, res) => {
+  const index = buscaLivro(req.params.id);
+  livros.splice(index, 1);
+  res.status(200).send("livro removido com sucesso");
+});
 
 export default app;
